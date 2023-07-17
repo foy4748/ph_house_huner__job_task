@@ -13,16 +13,22 @@ const USER = require("./Models/UserModel")
 // Using Middlewares
 
 app.use(cors({
-	origin: "*",
+	origin: ["http://127.0.0.1:5173", "http://localhost:5173"],
 	credentials: true,
 	methods: ["GET", "POST"]
 }));
 app.use(express.json())
-app.use(cookieParser())
+
+const cookieOptions = {
+	sameSite: 'none',
+	secure: true,
+	// Other cookie options if needed
+};
+app.use(cookieParser(null, cookieOptions))
 
 app.get("/", (req, res) => {
-	console.log(req.headers)
-	res.send({error: false, message: "Server is UP and running"})
+	console.log(req.cookies)
+	res.cookie("user1", JSON.stringify({test: "Test"}), {sameSite: 'none', secure: true, httpOnly: true}).end()
 })
 
 app.post("/", async (req, res) => {
@@ -34,15 +40,13 @@ app.post("/", async (req, res) => {
 	// 	role: "owner"
 
 	// }
-	console.log("Response Body", req.body)
 	const user1Obj = req.body
 	const user1 = new USER(user1Obj);
 	const response = await user1.save();
-	res.cookie("user1", JSON.stringify(response)).send(response)
 })
 
 app.get("/test", (req, res) => {
-	console.log(req.headers.user1)
+	console.log(JSON.stringify(req.cookies))
 	res.send({})
 })
 

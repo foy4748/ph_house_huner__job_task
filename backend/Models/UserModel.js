@@ -10,11 +10,19 @@ const User_Obj = {
 		type: String,
 		required: true,
 		trim: true,
+		unique: true
 	},
 	phone_number: {
 		type: String,
-		required: true,
-		trim: true,
+		unique: true,
+		validate: {
+			validator: function (v) {
+				const re = /(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/;
+				return (!v || !v.trim().length || re.text(v))
+			},
+			message: 'Only Valid mobile no. from Bangladesh is allowed'
+		},
+		required: true
 	},
 	password: {
 		type: String,
@@ -23,7 +31,7 @@ const User_Obj = {
 	role: {
 		type: String,
 		enum: ["owner", "renter"],
-		default: "user",
+		require: true
 	},
 };
 
