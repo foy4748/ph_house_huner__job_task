@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 const User_Obj = {
 	full_name: {
@@ -18,7 +19,7 @@ const User_Obj = {
 		validate: {
 			validator: function (v) {
 				const re = /(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/;
-				return (!v || !v.trim().length || re.text(v))
+				return (!v || !v.trim().length || re.test(v))
 			},
 			message: 'Only Valid mobile no. from Bangladesh is allowed'
 		},
@@ -33,6 +34,7 @@ const User_Obj = {
 		enum: ["owner", "renter"],
 		require: true
 	},
+	rented_houses: [{type: ObjectId, ref: 'House'}]
 };
 
 const User_ModelOptions = {

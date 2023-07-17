@@ -29,7 +29,7 @@ const House_Obj = {
 		validate: {
 			validator: function (v) {
 				const re = /(^(\+88|0088)?(01){1}[3456789]{1}(\d){8})$/;
-				return (!v || !v.trim().length || re.text(v))
+				return (!v || !v.trim().length || re.test(v))
 			},
 			message: 'Only Valid mobile no. from Bangladesh is allowed'
 		},

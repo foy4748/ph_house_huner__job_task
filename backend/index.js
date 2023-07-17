@@ -3,12 +3,16 @@ const cookieParser = require("cookie-parser")
 const app = express();
 const cors = require('cors')
 
+
 // Connecting to DB
 require("./dbConnect");
 
 const PORT = process.env.PORT || 3001
 
 const USER = require("./Models/UserModel")
+
+// Exporting Routes
+const HouseRoutes = require("./Controllers/HouseControl");
 
 // Using Middlewares
 
@@ -25,6 +29,9 @@ const cookieOptions = {
 	// Other cookie options if needed
 };
 app.use(cookieParser(null, cookieOptions))
+
+// Including Routes
+app.use("/house", HouseRoutes)
 
 app.get("/", (req, res) => {
 	console.log(req.cookies)

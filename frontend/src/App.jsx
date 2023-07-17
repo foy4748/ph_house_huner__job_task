@@ -17,8 +17,8 @@ function App() {
 				role: "owner"
 
 			}
-			const {data: resData} = await client.post("/", payload)
-			console.log(resData)
+			//const {data: resData} = await client.post("/", payload)
+			//console.log(resData)
 			const {data: testCookie} = await client.get("/test");
 			console.log(testCookie)
 		}
