@@ -5,6 +5,8 @@ import router from './Router/router';
 import {RouterProvider} from 'react-router-dom';
 import {AuthProvider} from 'react-auth-kit';
 
+import "bootstrap/dist/css/bootstrap.min.css"
+
 function App() {
 
 	useEffect(() => {

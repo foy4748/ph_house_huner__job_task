@@ -15,17 +15,29 @@ export default function Login() {
 		},
 		onSubmit: async (values) => {
 			const res = await client.post("/auth/login", values)
-			console.log(res.data.token)
 
 			const date = new Date();
 			const time_milliseconds = date.setTime(date.getTime() + (10 * 24 * 60 * 60 * 1000));
+
 			writeToLocalStorage("token", res.data.token)
+			writeToLocalStorage("user_id", res.data._doc._id)
 			signIn({
 				token: res.data.token,
 				expiresIn: getExpiresDateByMinutes(time_milliseconds),
 				tokenType: "Bearer",
 				authState: res.data.authUserState
 			})
+			console.log(res.data._doc)
+			if (res.data._doc.role == 'owner') {
+				navigate("/dashboard/owner")
+				return
+			}
+
+			if (res.data._doc.role == 'renter') {
+				navigate("/dashboard/renter")
+				return
+			}
+
 			navigate("/")
 		},
 	});

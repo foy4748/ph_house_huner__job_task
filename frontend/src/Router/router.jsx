@@ -6,6 +6,8 @@ import Home from "../Pages/Home";
 // Auth Pages
 import Login from "../Pages/AuthPages/Login";
 import Register from "../Pages/AuthPages/Register";
+import Owner from "../Pages/Dashboards/Owner";
+import Renter from "../Pages/Dashboards/Renter";
 
 const routerObj = [{
 	path: "/",
@@ -23,6 +25,15 @@ const routerObj = [{
 		{
 			path: "/register",
 			element: <Register />
+		},
+		// Dashboard Pages
+		{
+			path: "/dashboard/owner",
+			element: <Owner />
+		},
+		{
+			path: "/dashboard/renter",
+			element: <Renter />
 		},
 
 	]

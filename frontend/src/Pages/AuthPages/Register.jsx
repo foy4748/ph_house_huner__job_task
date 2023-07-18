@@ -1,8 +1,9 @@
-import {useFormik, Field, FormikProvider, Form} from 'formik';
+import {useFormik, Field, FormikProvider} from 'formik';
 import client from '../../axiosInterceptors';
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 
 export default function Register() {
+	const navigate = useNavigate()
 	// Handling Form Submit and Initial Values
 	const formik = useFormik({
 		initialValues: {
@@ -23,6 +24,17 @@ export default function Register() {
 				alert("Registered Failed")
 				return;
 			}
+			if (res.data._doc.role == 'owner') {
+				navigate("/dashboard/owner")
+				return
+			}
+
+			if (res.data._doc.role == 'renter') {
+				navigate("/dashboard/renter")
+				return
+			}
+
+			navigate("/")
 		}
 	});
 	return (
