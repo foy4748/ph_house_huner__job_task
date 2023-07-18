@@ -13,6 +13,7 @@ const USER = require("./Models/UserModel")
 
 // Exporting Routes
 const HouseRoutes = require("./Controllers/HouseControl");
+const AuthRoutes = require("./Controllers/AuthControl")
 
 // Using Middlewares
 
@@ -32,10 +33,10 @@ app.use(cookieParser(null, cookieOptions))
 
 // Including Routes
 app.use("/house", HouseRoutes)
+app.use("/auth", AuthRoutes)
 
 app.get("/", (req, res) => {
-	console.log(req.cookies)
-	res.cookie("user1", JSON.stringify({test: "Test"}), {sameSite: 'none', secure: true, httpOnly: true}).end()
+	res.cookie("user1", JSON.stringify({test: "Test"}), {sameSite: 'none'}).end()
 })
 
 app.post("/", async (req, res) => {
@@ -53,7 +54,6 @@ app.post("/", async (req, res) => {
 })
 
 app.get("/test", (req, res) => {
-	console.log(JSON.stringify(req.cookies))
 	res.send({})
 })
 

@@ -15,6 +15,7 @@ const User_Obj = {
 	},
 	phone_number: {
 		type: String,
+		required: true,
 		unique: true,
 		validate: {
 			validator: function (v) {
@@ -23,7 +24,6 @@ const User_Obj = {
 			},
 			message: 'Only Valid mobile no. from Bangladesh is allowed'
 		},
-		required: true
 	},
 	password: {
 		type: String,

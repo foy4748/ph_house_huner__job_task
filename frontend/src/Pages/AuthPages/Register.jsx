@@ -1,6 +1,10 @@
-import {useFormik, Field, FormikProvider} from 'formik';
+import {useFormik, Field, FormikProvider, Form} from 'formik';
+import client from '../../axiosInterceptors';
+import {useSignIn} from "react-auth-kit"
 
 export default function Register() {
+	const signIn = useSignIn();
+	// Handling Form Submit and Initial Values
 	const formik = useFormik({
 		initialValues: {
 			full_name: "",
@@ -10,13 +14,24 @@ export default function Register() {
 			password: ""
 
 		},
-		onSubmit: values => {
-			alert(JSON.stringify(values, null, 2));
+
+		// Handling POSTing data
+		onSubmit: async (values) => {
+			console.log(values)
+			const res = await client.post("/auth/register", values)
+			console.log(res.data.token)
+			if (signIn({
+				token: res.data.token,
+				tokenType: "Bearer",
+				authState: res.data,
+			})) {
+				alert("Registered Success")
+			}
 		},
 	});
 	return (
 		<FormikProvider value={formik}>
-			<form onSubmit={formik.handleSubmit}>
+			<Form>
 				<label htmlFor="full_name">Full Name</label>
 				<input
 					id="full_name"
@@ -60,7 +75,7 @@ export default function Register() {
 				/>
 
 				<button type="submit">Submit</button>
-			</form>
+			</Form>
 		</FormikProvider>
 	);
 }
