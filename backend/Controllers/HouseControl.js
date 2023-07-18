@@ -36,6 +36,24 @@ router.get("/:id", async (req, res) => {
 	}
 })
 
+router.get("/owner/:id", async (req, res) => {
+	try {
+		const {id} = req.params
+		const isValid = validMongoId(id)
+		if (isValid) {
+			const house = await HouseModel.find({owner_user_id: new ObjectId(id)});
+			return res.send(house)
+		} else {
+			return res.send({error: true, message: "owner_user_id _id is not valid"})
+		}
+
+	} catch (error) {
+		console.log("House Control", "GET /owner/:id", error)
+		return res.send({error: true, message: "Failed to GET owned houses"})
+
+	}
+})
+
 router.post("/", authzMW, async (req, res) => {
 	try {
 		const body = req.body
@@ -51,7 +69,23 @@ router.post("/", authzMW, async (req, res) => {
 	}
 })
 
-router.delete("/:id", async (req, res) => {
+router.put("/:id", authzMW, async (req, res) => {
+	try {
+		const {id} = req.params
+		const body = req.body
+		const owner_user_id = new ObjectId(res.decoded._doc._id)
+		body["owner_user_id"] = owner_user_id
+		const updatedHouse = await HouseModel.updateOne({owner_user_id, _id: id}, body);
+		return res.send(updatedHouse)
+	} catch (error) {
+		console.log("House Control", "PUT /:id", error)
+		return res.send({error: true, message: "Failed to POST a house"})
+
+	}
+
+})
+
+router.delete("/:id", authzMW, async (req, res) => {
 	try {
 		const {id} = req.params
 		const isValid = validMongoId(id)

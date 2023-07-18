@@ -20,7 +20,7 @@ const AuthRoutes = require("./Controllers/AuthControl")
 app.use(cors({
 	origin: ["http://127.0.0.1:5173", "http://localhost:5173"],
 	credentials: true,
-	methods: ["GET", "POST"]
+	methods: ["GET", "POST", "DELETE", "PUT"]
 }));
 app.use(express.json())
 
