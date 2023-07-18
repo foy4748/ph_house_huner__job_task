@@ -1,4 +1,4 @@
-//import './App.css'
+import './App.css'
 import router from './Router/router';
 import {RouterProvider} from 'react-router-dom';
 import {AuthProvider} from 'react-auth-kit';

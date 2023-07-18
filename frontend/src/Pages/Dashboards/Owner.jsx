@@ -80,7 +80,7 @@ export default function Owner() {
 			}
 			formik.resetForm();
 			handleClose1();
-			navigate("/dashboard/owner")
+			navigate("/dashboard/owner", {replace: true})
 		}
 	})
 

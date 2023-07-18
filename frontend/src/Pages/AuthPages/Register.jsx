@@ -25,16 +25,16 @@ export default function Register() {
 				return;
 			}
 			if (res.data._doc.role == 'owner') {
-				navigate("/dashboard/owner")
+				navigate("/dashboard/owner", {replace: true})
 				return
 			}
 
 			if (res.data._doc.role == 'renter') {
-				navigate("/dashboard/renter")
+				navigate("/dashboard/renter", {replace: true})
 				return
 			}
 
-			navigate("/")
+			navigate("/", {replace: true})
 		}
 	});
 	return (

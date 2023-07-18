@@ -1,0 +1,84 @@
+/** Defining Grid System **/
+.d-grid-system {
+	display: grid;
+	/* Didving into 12-grid system */
+	grid-template-columns: repeat(12, 1fr);
+}
+
+/* Grid Columns */
+.gs-1 {
+	/* 12 / 12 = 1
+	 * To create 1 column grid
+	 * Take 12 grid space 
+	 */
+	grid-column: auto / span 12;
+}
+
+.gs-2 {
+	/* 12 / 2 = 6
+	 * To create 3 column grid
+	 * Take 4 grid space 
+	 */
+	grid-column: auto / span 6;
+}
+
+.gs-3 {
+	/* 12 / 3 = 4
+	 * To create 3 column grid
+	 * Take 4 grid space 
+	 */
+	grid-column: auto / span 4;
+}
+
+.gs-4 {
+	/* 12 / 4 = 3
+	 * To create 4 column grid
+	 * Take 3 grid space 
+	 */
+	grid-column: auto / span 3;
+}
+
+/* Grid Gaps */
+.gs-gap-1 {
+	grid-gap: 10px;
+}
+
+.gs-gap-2 {
+	grid-gap: 20px;
+}
+
+.gs-gap-4 {
+	grid-gap: 40px;
+}
+
+@media screen and (max-width: 992px) {
+	.gs-2 {
+		grid-column: auto / span 12;
+	}
+
+	.gs-gap-md-1 {
+		grid-gap: 10px;
+	}
+
+	.gs-3,
+	.gs-4 {
+		grid-column: auto / span 6;
+	}
+
+	.gs-3:last-child {
+
+		grid-column: 4 / span 6;
+	}
+
+}
+
+@media screen and (max-width: 768px) {
+
+	.gs-4,
+	.gs-3,
+	.gs-3:last-child {
+		grid-column: auto / span 12;
+	}
+
+
+}
