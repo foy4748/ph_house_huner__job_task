@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react'
 import client from './axiosInterceptors';
 import router from './Router/router';
 import {RouterProvider} from 'react-router-dom';
+import {AuthProvider} from 'react-auth-kit';
 
 function App() {
 
@@ -29,7 +30,11 @@ function App() {
 
 	return (
 		<>
-			<RouterProvider router={router} />
+			<AuthProvider
+				authType={'localstorage'}
+				authName={'_auth'}
+			>
+				<RouterProvider router={router} /></AuthProvider>
 		</>
 	)
 }

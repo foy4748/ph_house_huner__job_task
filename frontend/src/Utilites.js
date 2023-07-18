@@ -18,4 +18,11 @@ function writeToLocalStorage(key, value) {
 	}
 }
 
-export {readLocalStorage, writeToLocalStorage}
+// timestampDate : Number
+const getExpiresDateByMinutes = (timestampDate) => {
+	const diff = timestampDate - (new Date().getTime());
+	const expiresOnMinutes = diff / (1000 * 60 * 60);
+	return expiresOnMinutes;
+}
+
+export {readLocalStorage, writeToLocalStorage, getExpiresDateByMinutes}

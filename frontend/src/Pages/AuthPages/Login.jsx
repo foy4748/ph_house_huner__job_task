@@ -1,9 +1,12 @@
 import {useFormik} from 'formik';
 import client from '../../axiosInterceptors';
 import {useLocation, Navigate, useNavigate} from "react-router-dom";
-import {writeToLocalStorage} from '../../Utilites';
+import {writeToLocalStorage, getExpiresDateByMinutes} from '../../Utilites';
+import {useSignIn} from 'react-auth-kit'
 
 export default function Login() {
+	const signIn = useSignIn();
+
 	const navigate = useNavigate();
 	const formik = useFormik({
 		initialValues: {
@@ -13,7 +16,16 @@ export default function Login() {
 		onSubmit: async (values) => {
 			const res = await client.post("/auth/login", values)
 			console.log(res.data.token)
+
+			const date = new Date();
+			const time_milliseconds = date.setTime(date.getTime() + (10 * 24 * 60 * 60 * 1000));
 			writeToLocalStorage("token", res.data.token)
+			signIn({
+				token: res.data.token,
+				expiresIn: getExpiresDateByMinutes(time_milliseconds),
+				tokenType: "Bearer",
+				authState: res.data.authUserState
+			})
 			navigate("/")
 		},
 	});
