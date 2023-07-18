@@ -33,4 +33,24 @@ router.post("/register", async (req, res) => {
 		return res.send({error: true, message: "Failed to register new user"})
 	}
 })
+
+router.post("/login", async (req, res) => {
+	try {
+		const {email, password} = req.body;
+		const user = await UserModel.findOne({email})
+		if (user && user.password == password) {
+			const token = jwt.sign({foo: 'bar'}, SECRET_JWT);
+			const response = {...user, token, password: null}
+			return res.send(response)
+
+		} else {
+			return res.send({error: true, message: "Email/Password didn't match or exists"})
+
+		}
+	} catch (error) {
+		console.error(error)
+		return res.send({error: true, message: "Failed to login user"})
+
+	}
+})
 module.exports = router

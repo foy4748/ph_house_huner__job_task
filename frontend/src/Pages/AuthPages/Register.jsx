@@ -23,10 +23,7 @@ export default function Register() {
 				alert("Registered Failed")
 				return;
 			}
-			if () {
-				alert("Registered Success")
-			}
-		},
+		}
 	});
 	return (
 		<section>

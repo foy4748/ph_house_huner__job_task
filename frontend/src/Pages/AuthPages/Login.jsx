@@ -1,13 +1,20 @@
 import {useFormik} from 'formik';
+import client from '../../axiosInterceptors';
+import {useLocation, Navigate, useNavigate} from "react-router-dom";
+import {writeToLocalStorage} from '../../Utilites';
 
 export default function Login() {
+	const navigate = useNavigate();
 	const formik = useFormik({
 		initialValues: {
 			email: '',
 			password: ''
 		},
-		onSubmit: values => {
-			alert(JSON.stringify(values, null, 2));
+		onSubmit: async (values) => {
+			const res = await client.post("/auth/login", values)
+			console.log(res.data.token)
+			writeToLocalStorage("token", res.data.token)
+			navigate("/")
 		},
 	});
 	return (

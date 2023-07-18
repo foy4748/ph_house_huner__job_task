@@ -5,10 +5,8 @@ import router from './Router/router';
 import {RouterProvider} from 'react-router-dom';
 
 function App() {
-	const isAuthenticated = useIsAuthenticated()
 
 	useEffect(() => {
-		console.log(isAuthenticated())
 		const fetchAPI = async () => {
 			const {data} = await client.get("/")
 			console.log(data)

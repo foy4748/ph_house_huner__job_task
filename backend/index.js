@@ -36,6 +36,7 @@ app.use("/house", HouseRoutes)
 app.use("/auth", AuthRoutes)
 
 app.get("/", (req, res) => {
+	console.log(req.headers)
 	res.cookie("user1", JSON.stringify({test: "Test"}), {sameSite: 'none'}).end()
 })
 
