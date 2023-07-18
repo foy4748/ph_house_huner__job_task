@@ -1,7 +1,9 @@
 import {useEffect, useState} from 'react'
 //import './App.css'
 import client from './axiosInterceptors';
-
+import {RouterProvider} from "react-router-dom"
+import {AuthProvider} from 'react-auth-kit'
+import router from './Router/router';
 
 function App() {
 	useEffect(() => {
@@ -27,7 +29,12 @@ function App() {
 
 	return (
 		<>
-			<h1>Testing</h1>
+			<AuthProvider
+				authType={'cookie'}
+				authName={'_auth'}
+			>
+				<RouterProvider router={router} />
+			</AuthProvider>
 		</>
 	)
 }
