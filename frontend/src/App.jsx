@@ -1,12 +1,14 @@
 import {useEffect, useState} from 'react'
 //import './App.css'
 import client from './axiosInterceptors';
-import {RouterProvider} from "react-router-dom"
-import {AuthProvider} from 'react-auth-kit'
 import router from './Router/router';
+import {RouterProvider} from 'react-router-dom';
 
 function App() {
+	const isAuthenticated = useIsAuthenticated()
+
 	useEffect(() => {
+		console.log(isAuthenticated())
 		const fetchAPI = async () => {
 			const {data} = await client.get("/")
 			console.log(data)
@@ -29,12 +31,7 @@ function App() {
 
 	return (
 		<>
-			<AuthProvider
-				authType={'cookie'}
-				authName={'_auth'}
-			>
-				<RouterProvider router={router} />
-			</AuthProvider>
+			<RouterProvider router={router} />
 		</>
 	)
 }

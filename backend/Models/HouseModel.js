@@ -1,6 +1,11 @@
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Schema.Types.ObjectId
 
 const House_Obj = {
+	owner_user_id: {
+		type: ObjectId,
+		required: true
+	},
 	name: {
 		type: String,
 		required: true,
