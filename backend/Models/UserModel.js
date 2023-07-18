@@ -34,7 +34,10 @@ const User_Obj = {
 		enum: ["owner", "renter"],
 		require: true
 	},
-	rented_houses: [{type: ObjectId, ref: 'House'}]
+	rented_houses: {
+		type: [{type: ObjectId, ref: 'House'}],
+		validate: [(val) => val.length <= 2, "Max Booking Limit 2"]
+	}
 };
 
 const User_ModelOptions = {

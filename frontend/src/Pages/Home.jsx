@@ -1,6 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import {NavLink} from "react-router-dom";
 import client from "../axiosInterceptors";
+import {readLocalStorage} from "../Utilites";
 
 export default function Home() {
 	// Handling Home Data
@@ -17,8 +18,10 @@ export default function Home() {
 		},
 	});
 
-	const handleBook = (id) => {
-
+	const handleBook = async (house_id) => {
+		const user_id = readLocalStorage('user_id')
+		const {data} = await client.post("/booking", {user_id, house_id})
+		console.log(data)
 	}
 
 	return (
@@ -35,7 +38,7 @@ export default function Home() {
 							<h1>{name}</h1>
 							<p>{city}</p>
 							<p>{address}</p>
-							<button onClick={handleBook(_id)}>Book</button>
+							<button onClick={() => handleBook(_id)}>Book</button>
 						</div>
 					)
 				})}

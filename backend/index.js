@@ -14,6 +14,7 @@ const USER = require("./Models/UserModel")
 // Exporting Routes
 const HouseRoutes = require("./Controllers/HouseControl");
 const AuthRoutes = require("./Controllers/AuthControl")
+const BookingRoutes = require('./Controllers/BookingControl')
 
 // Using Middlewares
 
@@ -22,6 +23,7 @@ app.use(cors({
 	credentials: true,
 	methods: ["GET", "POST", "DELETE", "PUT"]
 }));
+
 app.use(express.json())
 
 const cookieOptions = {
@@ -34,27 +36,14 @@ app.use(cookieParser(null, cookieOptions))
 // Including Routes
 app.use("/house", HouseRoutes)
 app.use("/auth", AuthRoutes)
+app.use("/booking", BookingRoutes)
 
 app.get("/", (req, res) => {
-	res.cookie("user1", JSON.stringify({test: "Test"}), {sameSite: 'none'}).end()
-})
-
-app.post("/", async (req, res) => {
-	// const user1Obj = {
-	// 	full_name: "Faisal Rahman",
-	// 	email: "faisaljfcl@gmail.com",
-	// 	phone_number: "01717111236",
-	// 	password: "kjdfll;adsf",
-	// 	role: "owner"
-
-	// }
-	const user1Obj = req.body
-	const user1 = new USER(user1Obj);
-	const response = await user1.save();
+	return res.send({error: false, message: "Server is UP and Running"})
 })
 
 app.get("/test", (req, res) => {
-	res.send({})
+	return res.send({})
 })
 
 
