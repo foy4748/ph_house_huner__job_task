@@ -15,8 +15,8 @@ router.post("/register", async (req, res) => {
 	try {
 		const newUser = new UserModel(body);
 		const _response = await newUser.save();
-		const token = jwt.sign({foo: 'bar'}, SECRET_JWT);
 		const response = {..._response, token, password: null}
+		const token = jwt.sign(response, SECRET_JWT);
 		return res.send(response)
 
 	} catch (error) {
@@ -39,8 +39,9 @@ router.post("/login", async (req, res) => {
 		const {email, password} = req.body;
 		const user = await UserModel.findOne({email})
 		if (user && user.password == password) {
-			const token = jwt.sign({foo: 'bar'}, SECRET_JWT);
-			const response = {...user, token, password: null}
+			const response = {...user, password: null}
+			const token = jwt.sign(response, SECRET_JWT);
+			response.token = token
 			return res.send(response)
 
 		} else {

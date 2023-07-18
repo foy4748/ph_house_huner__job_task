@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 
+import client from "../../axiosInterceptors";
+
 export default function Owner() {
 	const navigate = useNavigate();
 	const [show, setShow] = useState(false);
@@ -24,8 +26,10 @@ export default function Owner() {
 			rent_per_month: "",
 			description: ""
 		},
-		onSubmit: (values) => {
+		onSubmit: async (values) => {
 			console.log(values);
+			const {data} = await client.post("/house", values);
+			console.log(data)
 			navigate("/dashboard/owner")
 		}
 	})
@@ -89,7 +93,7 @@ export default function Owner() {
 					<Button variant="secondary" onClick={handleClose}>
 						Close
 					</Button>
-					<Button variant="primary" onClick={handleClose}>
+					<Button variant="primary" onClick={formik.handleSubmit}>
 						Save Changes
 					</Button>
 				</Modal.Footer>

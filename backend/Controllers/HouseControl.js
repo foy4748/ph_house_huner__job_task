@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const mongoose = require("mongoose")
+const authzMW = require("../MiddleWares/authMW");
 
 const ObjectId = mongoose.Types.ObjectId
 const HouseModel = require("../Models/HouseModel");
@@ -35,10 +36,11 @@ router.get("/:id", async (req, res) => {
 	}
 })
 
-router.post("/", async (req, res) => {
+router.post("/", authzMW, async (req, res) => {
 	try {
 		const body = req.body
-		console.log(body)
+		const owner_user_id = new ObjectId(res.decoded._doc._id)
+		body["owner_user_id"] = owner_user_id
 		const newHouse = new HouseModel(body);
 		const response = await newHouse.save()
 		return res.send(response)
