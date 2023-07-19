@@ -1,4 +1,5 @@
 import {useQuery} from "@tanstack/react-query";
+import {toast} from "react-hot-toast";
 import {NavLink} from "react-router-dom";
 import client from "../axiosInterceptors";
 import {readLocalStorage} from "../Utilites";
@@ -19,9 +20,18 @@ export default function Home() {
 	});
 
 	const handleBook = async (house_id) => {
-		const user_id = readLocalStorage('user_id')
-		const {data} = await client.post("/booking", {user_id, house_id})
-		console.log(data)
+		try {
+			const user_id = readLocalStorage('user_id')
+			const {data: res} = await client.post("/booking", {user_id, house_id})
+			if (res.error) {
+				toast.error(res.message)
+			}
+			toast.success("Successfully booked the house");
+		} catch (error) {
+			console.error(error.response.data.message)
+			toast.error(error.response.data.message)
+			toast("Please, Login as a Renter")
+		}
 	}
 
 	return (
