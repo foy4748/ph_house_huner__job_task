@@ -10,7 +10,7 @@ import {readLocalStorage} from '../../Utilites';
 
 import CreateHouseModal from '../../Components/CreateHouseModal';
 
-import toast, {Toaster} from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import PictureModal from '../../Components/PictureModal';
 
 export default function Owner() {

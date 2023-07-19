@@ -1,10 +1,15 @@
 import {useQuery} from "@tanstack/react-query";
+import {useFormik} from "formik";
+import {useState} from "react";
 import {toast} from "react-hot-toast";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import client from "../axiosInterceptors";
+import BookAHouseModal from "../Components/BookAHouseModal";
 import {readLocalStorage} from "../Utilites";
 
 export default function Home() {
+	const [currentHouse, setCurrentHouse] = useState()
+	const navigate = useNavigate();
 	// Handling Home Data
 	const {
 		data: allHouses,
@@ -19,21 +24,51 @@ export default function Home() {
 		},
 	});
 
-	const handleBook = async (house_id) => {
-		try {
-			const user_id = readLocalStorage('user_id')
-			const {data: res} = await client.post("/booking", {user_id, house_id})
-			if (res.error) {
-				toast.error(res.message)
-				return;
+	const formik = useFormik({
+		initialValues: {
+			name: "",
+			email: "",
+			phone_number: ""
+		},
+		onSubmit: async (values) => {
+			console.log(values)
+			// Handling Booking Request
+			const handleBook = async (house_id) => {
+				try {
+					const user_id = readLocalStorage('user_id')
+					const {data: res} = await client.post("/booking", {user_id, house_id, ...values})
+					if (res.error) {
+						toast.error(res.message)
+						handleCloseBookModal()
+						return;
+					}
+					toast.success("Successfully booked the house");
+					handleCloseBookModal()
+				} catch (error) {
+					console.error(error.response.data.message)
+					handleCloseBookModal()
+					toast.error(error.response.data.message)
+					toast("Please, Login as a Renter")
+				}
 			}
-			toast.success("Successfully booked the house");
-		} catch (error) {
-			console.error(error.response.data.message)
-			toast.error(error.response.data.message)
-			toast("Please, Login as a Renter")
+			await handleBook(currentHouse)
+			formik.resetForm();
+			navigate('/', {replace: true})
 		}
+	})
+
+	const [showBookModal, setShowBookModal] = useState(false)
+
+	const handleShowBookModal = async () => {
+		const user_id = readLocalStorage('user_id')
+		const {data} = await client.get(`/auth/${user_id}`)
+		const {full_name, email, phone_number} = data;
+		console.log(data)
+		formik.setValues({name: full_name, email, phone_number})
+		setShowBookModal(true)
 	}
+	const handleCloseBookModal = () => setShowBookModal(false);
+
 
 	return (
 		<section>
@@ -42,6 +77,7 @@ export default function Home() {
 				<NavLink to="/register">Register</NavLink>
 				<NavLink to="/login">Login</NavLink>
 			</section>
+			<BookAHouseModal show={showBookModal} formik={formik} handleClose={handleCloseBookModal} />
 			<section className="d-grid-system">
 				{allHouses && allHouses.length && allHouses.map(({_id, name, city, address}) => {
 					return (
@@ -49,7 +85,10 @@ export default function Home() {
 							<h1>{name}</h1>
 							<p>{city}</p>
 							<p>{address}</p>
-							<button onClick={() => handleBook(_id)}>Book</button>
+							<button onClick={() => {
+								handleShowBookModal()
+								setCurrentHouse(_id)
+							}}>Book</button>
 						</div>
 					)
 				})}

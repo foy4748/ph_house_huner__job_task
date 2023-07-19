@@ -49,4 +49,20 @@ router.post("/", authzMW, roleCheck("renter"), async (req, res) => {
 	}
 })
 
+router.delete("/:id", authzMW, roleCheck('renter'), async (req, res) => {
+	const user_id = res.decoded._doc._id
+	const {id: house_id} = req.params
+	try {
+		const user = await UserModel.findOne({_id: new ObjectId(user_id)})
+		user.rented_houses = user.rented_houses.filter((house) => !house.equals(house_id))
+		const updatedUser = await UserModel.updateOne({_id: new ObjectId(user_id)}, user);
+		return res.send(updatedUser)
+	} catch (error) {
+		console.error("Booking Control", "DELETE /", error)
+		return res.send({error: true, message: "Something Went Wrong"})
+	}
+
+
+})
+
 module.exports = router
