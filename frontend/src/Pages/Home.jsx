@@ -25,6 +25,7 @@ export default function Home() {
 			const {data: res} = await client.post("/booking", {user_id, house_id})
 			if (res.error) {
 				toast.error(res.message)
+				return;
 			}
 			toast.success("Successfully booked the house");
 		} catch (error) {
