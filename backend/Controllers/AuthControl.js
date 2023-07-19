@@ -33,9 +33,10 @@ router.post("/register", async (req, res) => {
 	try {
 		body.password = await generateHashedPassword(body.password)
 		const newUser = new UserModel(body);
-		const response = await newUser.save();
-		response._doc.password = null
-		const token = jwt.sign(response, SECRET_JWT);
+		const _response = await newUser.save();
+		_response._doc.password = null
+		const response = {..._response, password: null}
+		const token = jwt.sign(response._doc, SECRET_JWT);
 		response.token = token
 		return res.send(response)
 
