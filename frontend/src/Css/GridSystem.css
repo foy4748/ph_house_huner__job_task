@@ -30,6 +30,11 @@
 	grid-column: auto / span 4;
 }
 
+.gs-3:last-child {
+
+	grid-column: 5 / span 4;
+}
+
 .gs-4 {
 	/* 12 / 4 = 3
 	 * To create 4 column grid
@@ -65,10 +70,6 @@
 		grid-column: auto / span 6;
 	}
 
-	.gs-3:last-child {
-
-		grid-column: 4 / span 6;
-	}
 
 }
 

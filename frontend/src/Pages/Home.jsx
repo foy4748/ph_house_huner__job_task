@@ -8,6 +8,8 @@ import BookAHouseModal from "../Components/BookAHouseModal";
 import {readLocalStorage} from "../Utilites";
 
 import Pagination from 'react-bootstrap/Pagination';
+import Card from 'react-bootstrap/Card';
+import Button from "react-bootstrap/Button"
 
 export default function Home() {
 	const [currentHouse, setCurrentHouse] = useState()
@@ -152,19 +154,27 @@ export default function Home() {
 					<PaginationButtons />
 				</Pagination>
 			</div>
-			<section className="d-grid-system">
-				{houses && houses.length && houses.map(({_id, name, city, address, bedrooms, bathrooms}) => {
+			<section className="d-grid-system gs-gap-2">
+				{houses && houses.length && houses.map(({_id, name, city, address, bedrooms, bathrooms, picture}) => {
 					return (
 						<div key={_id} className="gs-3">
-							<h1>{name}</h1>
-							<p>{city}</p>
-							<p>{address}</p>
-							<p>beds:{bedrooms}</p>
-							<p>baths: {bathrooms}</p>
-							<button onClick={() => {
-								handleShowBookModal()
-								setCurrentHouse(_id)
-							}}>Book</button>
+							<Card className="h-100">
+								<Card.Img variant="top" src={picture} />
+								<Card.Body>
+									<Card.Title>Card Title</Card.Title>
+									<Card.Text>
+										<h1>{name}</h1>
+										<p>{city}</p>
+										<p>{address}</p>
+										<p>beds:{bedrooms}</p>
+										<p>baths: {bathrooms}</p>
+									</Card.Text>
+									<Button onClick={() => {
+										handleShowBookModal()
+										setCurrentHouse(_id)
+									}} variant="primary">Book</Button>
+								</Card.Body>
+							</Card>
 						</div>
 					)
 				})}
