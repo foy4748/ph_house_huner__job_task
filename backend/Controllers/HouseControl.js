@@ -8,10 +8,19 @@ const ObjectId = mongoose.Types.ObjectId
 const HouseModel = require("../Models/HouseModel");
 
 const validMongoId = require("../utilites/validMongoId");
-router.get("/", async (_, res) => {
+router.get("/", async (req, res) => {
+	const {page, limit} = req.query
+	let houses;
+	let totalHouses;
 	try {
-		const houses = await HouseModel.find({});
-		return res.send(houses)
+		totalHouses = await HouseModel.estimatedDocumentCount()
+		if (page && limit) {
+			houses = await HouseModel.find({}).skip((parseInt(page) - 1) * limit).limit(parseInt(limit)).sort({createdAt: -1})
+		} else {
+
+			houses = await HouseModel.find({}).sort({createdAt: -1});
+		}
+		return res.send({houses, totalHouses})
 
 	} catch (error) {
 		console.log("House Control", "GET /", error)

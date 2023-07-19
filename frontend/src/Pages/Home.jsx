@@ -7,9 +7,13 @@ import client from "../axiosInterceptors";
 import BookAHouseModal from "../Components/BookAHouseModal";
 import {readLocalStorage} from "../Utilites";
 
+import Pagination from 'react-bootstrap/Pagination';
+
 export default function Home() {
 	const [currentHouse, setCurrentHouse] = useState()
+	const [currentPage, setCurrentPage] = useState(1)
 	const [houses, setHouse] = useState([])
+	const [totalHouses, setTotalHouse] = useState(0)
 
 	// Filters
 	// filter by city, bedrooms, bathrooms, room size,
@@ -55,7 +59,7 @@ export default function Home() {
 		}
 		if (rentHigh) {
 			setHouse((prev) => {
-				const newSet = prev.filter((house) => house.rentHigh >= rentHigh);
+				const newSet = prev.filter((house) => house.rentHigh <= rentHigh);
 				return newSet
 			})
 		}
@@ -63,17 +67,21 @@ export default function Home() {
 
 	//-------------------------------------
 	const navigate = useNavigate();
+
+	console.log(totalHouses)
+
 	// Handling Home Data
 	const {
 		data: allhouses,
 		status,
 		refetch,
 	} = useQuery({
-		queryKey: ['all_houses'],
+		queryKey: ['all_houses', currentPage],
 		queryFn: async () => {
-			const url = '/house';
+			const url = `/house?page=${currentPage}&limit=10`;
 			const {data} = await client.get(url);
-			setHouse(data)
+			setHouse(data.houses)
+			setTotalHouse(parseInt(data.totalHouses))
 			return data;
 		},
 	});
@@ -85,7 +93,6 @@ export default function Home() {
 			phone_number: ""
 		},
 		onSubmit: async (values) => {
-			console.log(values)
 			// Handling Booking Request
 			const handleBook = async (house_id) => {
 				try {
@@ -117,13 +124,21 @@ export default function Home() {
 		const user_id = readLocalStorage('user_id')
 		const {data} = await client.get(`/auth/${user_id}`)
 		const {full_name, email, phone_number} = data;
-		console.log(data)
 		formik.setValues({name: full_name, email, phone_number})
 		setShowBookModal(true)
 	}
 	const handleCloseBookModal = () => setShowBookModal(false);
 
 
+	const PaginationButtons = () => {
+		const numberOfPages = Math.ceil(totalHouses / 10) //Limit is 10 (Hardcoded)
+		const paginationItems = []
+		for (let i = 0; i < numberOfPages; i++) {
+			paginationItems.push(<Pagination.Item key={i} active={i == currentPage - 1} onClick={() => setCurrentPage(i + 1)}>{i + 1}</Pagination.Item>)
+		}
+
+		return paginationItems
+	}
 	return (
 		<section>
 			<section>
@@ -135,6 +150,11 @@ export default function Home() {
 				<button onClick={filterHouse}>Filter</button>
 			</section>
 			<BookAHouseModal show={showBookModal} formik={formik} handleClose={handleCloseBookModal} />
+			<div className="d-flex justify-content-center">
+				<Pagination>
+					<PaginationButtons />
+				</Pagination>
+			</div>
 			<section className="d-grid-system">
 				{houses && houses.length && houses.map(({_id, name, city, address, bedrooms, bathrooms}) => {
 					return (
@@ -152,6 +172,11 @@ export default function Home() {
 					)
 				})}
 			</section>
+			<div className="d-flex justify-content-center">
+				<Pagination>
+					<PaginationButtons />
+				</Pagination>
+			</div>
 		</section>
 	)
 }
