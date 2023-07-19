@@ -20,11 +20,11 @@ const BookingRoutes = require('./Controllers/BookingControl')
 
 app.use(cors({
 	origin: [
+		"https://ph-house-hunter-job-task.netlify.app",
 		"http://127.0.0.1:3000",
 		"http://127.0.0.1:5173",
 		"http://localhost:3000",
 		"http://localhost:5173",
-		"https://ph-house-hunter-job-task.netlify.app/"
 	],
 	credentials: true,
 	methods: ["GET", "POST", "DELETE", "PUT"]
