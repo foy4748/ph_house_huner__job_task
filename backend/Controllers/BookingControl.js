@@ -6,6 +6,7 @@ const roleCheck = require("../MiddleWares/roleCheckMW")
 
 const ObjectId = mongoose.Types.ObjectId
 const UserModel = require("../Models/UserModel");
+const BookingModel = require("../Models/BookingModel");
 //const HouseModel = require("../Models/HouseModel");
 
 router.get("/", authzMW, roleCheck("renter"), async (_, res) => {
@@ -36,6 +37,14 @@ router.post("/", authzMW, roleCheck("renter"), async (req, res) => {
 		if (user.rented_houses.length < 2) {
 
 			user.rented_houses.push(new ObjectId(house_id))
+			const {phone_number: renter_phone_number} = req.body
+			const forBooking = {
+				house_id: new ObjectId(house_id),
+				renter_id: new ObjectId(user_id),
+				renter_phone_number
+			}
+			// const booked = new BookingModel(forBooking)
+			// await booked.save();
 			const updatedUser = await UserModel.updateOne({_id: new ObjectId(user_id)}, user)
 			delete updatedUser['password']
 			return res.send({message: "Updating", updatedUser})
