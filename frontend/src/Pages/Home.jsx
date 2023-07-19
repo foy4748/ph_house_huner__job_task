@@ -9,10 +9,63 @@ import {readLocalStorage} from "../Utilites";
 
 export default function Home() {
 	const [currentHouse, setCurrentHouse] = useState()
+	const [houses, setHouse] = useState([])
+
+	// Filters
+	// filter by city, bedrooms, bathrooms, room size,
+	// availability, and rent per month (using a range selector)
+	const [city, setCity] = useState()
+	const [bedrooms, setBedrooms] = useState()
+	const [bathrooms, setBathrooms] = useState()
+	const [roomSize, setRoomSize] = useState()
+	const [rentLow, setRentLow] = useState(0)
+	const [rentHigh, setRentHigh] = useState(0)
+
+	const filterHouse = () => {
+		setHouse(allhouses)
+		if (city) {
+			setHouse((prev) => {
+				const newSet = prev.filter((house) => house.city == city);
+				return newSet
+			})
+		}
+		if (bathrooms) {
+			setHouse((prev) => {
+				const newSet = prev.filter((house) => house.bathrooms == bathrooms);
+				return newSet
+			})
+		}
+		if (bedrooms) {
+			setHouse((prev) => {
+				const newSet = prev.filter((house) => house.bedrooms == bedrooms);
+				return newSet
+			})
+		}
+		if (roomSize) {
+			setHouse((prev) => {
+				const newSet = prev.filter((house) => house.roomSize == roomSize);
+				return newSet
+			})
+		}
+		if (rentLow) {
+			setHouse((prev) => {
+				const newSet = prev.filter((house) => house.rentLow >= rentLow);
+				return newSet
+			})
+		}
+		if (rentHigh) {
+			setHouse((prev) => {
+				const newSet = prev.filter((house) => house.rentHigh >= rentHigh);
+				return newSet
+			})
+		}
+	}
+
+	//-------------------------------------
 	const navigate = useNavigate();
 	// Handling Home Data
 	const {
-		data: allHouses,
+		data: allhouses,
 		status,
 		refetch,
 	} = useQuery({
@@ -20,6 +73,7 @@ export default function Home() {
 		queryFn: async () => {
 			const url = '/house';
 			const {data} = await client.get(url);
+			setHouse(data)
 			return data;
 		},
 	});
@@ -76,15 +130,20 @@ export default function Home() {
 				<h1>Welcome to House Hunter</h1>
 				<NavLink to="/register">Register</NavLink>
 				<NavLink to="/login">Login</NavLink>
+				<input onChange={(e) => setBedrooms(e.target.value)} name="bedrooms" type="number" placeholder="Bedrooms" />
+				<input onChange={(e) => setBathrooms(e.target.value)} name="bathrooms" type="number" placeholder="Bathrooms" />
+				<button onClick={filterHouse}>Filter</button>
 			</section>
 			<BookAHouseModal show={showBookModal} formik={formik} handleClose={handleCloseBookModal} />
 			<section className="d-grid-system">
-				{allHouses && allHouses.length && allHouses.map(({_id, name, city, address}) => {
+				{houses && houses.length && houses.map(({_id, name, city, address, bedrooms, bathrooms}) => {
 					return (
 						<div key={_id} className="gs-3">
 							<h1>{name}</h1>
 							<p>{city}</p>
 							<p>{address}</p>
+							<p>beds:{bedrooms}</p>
+							<p>baths: {bathrooms}</p>
 							<button onClick={() => {
 								handleShowBookModal()
 								setCurrentHouse(_id)
