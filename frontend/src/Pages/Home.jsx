@@ -30,38 +30,38 @@ export default function Home() {
 	const filterHouse = () => {
 		setHouse(allhouses)
 		if (city) {
-			setHouse((prev) => {
-				const newSet = prev.filter((house) => house.city == city);
+			setHouse(() => {
+				const newSet = houses.filter((house) => house.city == city);
 				return newSet
 			})
 		}
 		if (bathrooms) {
-			setHouse((prev) => {
-				const newSet = prev.filter((house) => house.bathrooms == bathrooms);
+			setHouse(() => {
+				const newSet = houses.filter((house) => house.bathrooms == bathrooms);
 				return newSet
 			})
 		}
 		if (bedrooms) {
-			setHouse((prev) => {
-				const newSet = prev.filter((house) => house.bedrooms == bedrooms);
+			setHouse(() => {
+				const newSet = houses.filter((house) => house.bedrooms == bedrooms);
 				return newSet
 			})
 		}
 		if (roomSize) {
-			setHouse((prev) => {
-				const newSet = prev.filter((house) => house.roomSize == roomSize);
+			setHouse(() => {
+				const newSet = houses.filter((house) => house.roomSize == roomSize);
 				return newSet
 			})
 		}
 		if (rentLow) {
-			setHouse((prev) => {
-				const newSet = prev.filter((house) => house.rentLow >= rentLow);
+			setHouse(() => {
+				const newSet = houses.filter((house) => house.rentLow >= rentLow);
 				return newSet
 			})
 		}
 		if (rentHigh) {
-			setHouse((prev) => {
-				const newSet = prev.filter((house) => house.rentHigh <= rentHigh);
+			setHouse(() => {
+				const newSet = houses.filter((house) => house.rentHigh <= rentHigh);
 				return newSet
 			})
 		}
@@ -146,7 +146,11 @@ export default function Home() {
 				<h1>Welcome to House Hunter</h1>
 				<input onChange={(e) => setBedrooms(e.target.value)} name="bedrooms" type="number" placeholder="Bedrooms" />
 				<input onChange={(e) => setBathrooms(e.target.value)} name="bathrooms" type="number" placeholder="Bathrooms" />
-				<button onClick={filterHouse}>Filter</button>
+				<input onChange={(e) => setRoomSize(e.target.value)} name="room_size" type="text" placeholder="Room Size" />
+				<input onChange={(e) => setRentLow(e.target.value)} name="rent_low" type="number" placeholder="Min Rent" />
+				<input onChange={(e) => setRentHigh(e.target.value)} name="rent_high" type="number" placeholder="Max Rent" />
+				<input onChange={(e) => setCity(e.target.value)} name="city" type="text" placeholder="City" />
+				<Button onClick={filterHouse}>Filter</Button>
 			</section>
 			<BookAHouseModal show={showBookModal} formik={formik} handleClose={handleCloseBookModal} />
 			<div className="d-flex justify-content-center">
@@ -161,7 +165,7 @@ export default function Home() {
 							<Card className="h-100">
 								<Card.Img variant="top" src={picture} />
 								<Card.Body>
-									<Card.Title>Card Title</Card.Title>
+									<Card.Title>{city}</Card.Title>
 									<Card.Text>
 										<h1>{name}</h1>
 										<p>{city}</p>
