@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const mongoose = require("mongoose")
 const authzMW = require("../MiddleWares/authMW");
+const roleCheck = require('../MiddleWares/roleCheckMW');
 
 const ObjectId = mongoose.Types.ObjectId
 const HouseModel = require("../Models/HouseModel");
@@ -54,7 +55,7 @@ router.get("/owner/:id", async (req, res) => {
 	}
 })
 
-router.post("/", authzMW, async (req, res) => {
+router.post("/", authzMW, roleCheck('owner'), async (req, res) => {
 	try {
 		const body = req.body
 		const owner_user_id = new ObjectId(res.decoded._doc._id)
