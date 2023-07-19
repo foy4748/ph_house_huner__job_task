@@ -1,7 +1,14 @@
-function isPalindrome(txt) {
+function isPalindrome(_txt) {
+	let txt
+	try {
+		txt = _txt.toString()
+	} catch (error) {
+		console.log("Input coudn't be converted to string")
+		console.error(error)
+	}
 
 	// Checking whether a input is given or not
-	if (txt || txt.length < 1) {
+	if (txt.length < 1) {
 		console.log("Please enter a string")
 		return;
 	}
@@ -9,7 +16,7 @@ function isPalindrome(txt) {
 	// Single Char Txt is considered 
 	// Palindrome according to definition
 	// No need to traverse using loop :D 
-	if (txt.length = 1) {
+	if (txt.length == 1) {
 		return true
 	}
 
@@ -44,6 +51,7 @@ function isPalindrome(txt) {
 }
 
 // Testing
+console.log(isPalindrome(242)); // Output: true
 console.log(isPalindrome("level")); // Output: true
 console.log(isPalindrome("hello")); // Output: false
 console.log(isPalindrome("A man, a plan, a canal: Panama")); // Output: true
