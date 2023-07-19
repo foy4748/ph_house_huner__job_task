@@ -1,4 +1,4 @@
-import {NavLink} from 'react-router-dom';
+import {NavLink, useNavigate} from 'react-router-dom';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -9,6 +9,22 @@ import {useEffect} from 'react';
 import {userContext} from '../Contexts/AuthContext';
 
 export default function NavBar() {
+	const navigate = useNavigate()
+	const handleDashboard = () => {
+		const role = readLocalStorage('role')
+		console.log(role)
+		if (role == "owner") {
+			navigate("/dashboard/owner", {replace: true})
+		}
+		if (role == "renter") {
+			navigate("/dashboard/renter", {replace: true})
+
+		}
+		if (!role) {
+			toast.error("Please Login")
+			navigate("/login", {replace: true})
+		}
+	}
 	const NavItems = () => {
 		const {loggedIn, setLoggedIn} = useContext(userContext)
 
@@ -39,6 +55,7 @@ export default function NavBar() {
 				<Navbar.Collapse id="basic-navbar-nav">
 					<Nav className="me-auto">
 						<Nav.Link href="/">Home</Nav.Link>
+						<Nav.Link onClick={handleDashboard}>Dashboard</Nav.Link>
 					</Nav>
 					<Nav className="me-auto">
 						<NavItems />

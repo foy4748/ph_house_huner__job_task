@@ -28,7 +28,7 @@ export default function Register() {
 				const date = new Date();
 				writeToLocalStorage("token", res.data.token)
 				writeToLocalStorage("user_id", res.data._doc._id)
-				writeToLocalStorage("role", res.data._doc._id);
+				writeToLocalStorage("role", res.data._doc.role);
 				setLoggedIn(true)
 				date.setTime(date.getTime() + (10 * 24 * 60 * 60 * 1000));
 				if (res.data.error) {

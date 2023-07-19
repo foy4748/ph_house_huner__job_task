@@ -26,7 +26,7 @@ export default function Login() {
 
 				writeToLocalStorage("token", res.data.token)
 				writeToLocalStorage("user_id", res.data._doc._id)
-				writeToLocalStorage("role", res.data._doc._id);
+				writeToLocalStorage("role", res.data._doc.role);
 				setLoggedIn(true)
 				signIn({
 					token: res.data.token,
