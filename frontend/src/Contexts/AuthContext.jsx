@@ -1,6 +1,8 @@
 import PropTypes from "prop-types"
-import {createContext} from "react";
+import {createContext, useEffect, useState} from "react";
+import {readLocalStorage} from "../Utilites";
 const userContext = createContext(null);
+
 export {userContext};
 
 AuthContext.propTypes = {
@@ -9,11 +11,18 @@ AuthContext.propTypes = {
 
 export default function AuthContext({children}) {
 
-	const isLoggedIn = () => {
-
-	}
+	const [loggedIn, setLoggedIn] = useState(false)
+	useEffect(() => {
+		const token = readLocalStorage('token')
+		if (token) {
+			setLoggedIn(true);
+		} else {
+			setLoggedIn(false)
+		}
+		console.log(loggedIn)
+	}, [])
 	const contextPayLoad = {
-		isLoggedIn
+		loggedIn, setLoggedIn
 	}
 	return (
 		<userContext.Provider value={contextPayLoad}>

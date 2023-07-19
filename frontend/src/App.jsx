@@ -9,6 +9,7 @@ import {
 	QueryClient,
 	QueryClientProvider,
 } from '@tanstack/react-query'
+import AuthContext from './Contexts/AuthContext';
 
 // Create a client
 const queryClient = new QueryClient()
@@ -22,8 +23,9 @@ function App() {
 					authType={'localstorage'}
 					authName={'_auth'}
 				>
-					<RouterProvider router={router} />
-
+					<AuthContext>
+						<RouterProvider router={router} />
+					</AuthContext>
 				</AuthProvider>
 			</QueryClientProvider>
 		</>

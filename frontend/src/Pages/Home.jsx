@@ -68,7 +68,6 @@ export default function Home() {
 	//-------------------------------------
 	const navigate = useNavigate();
 
-	console.log(totalHouses)
 
 	// Handling Home Data
 	const {
@@ -140,11 +139,9 @@ export default function Home() {
 		return paginationItems
 	}
 	return (
-		<section>
+		<section className="container">
 			<section>
 				<h1>Welcome to House Hunter</h1>
-				<NavLink to="/register">Register</NavLink>
-				<NavLink to="/login">Login</NavLink>
 				<input onChange={(e) => setBedrooms(e.target.value)} name="bedrooms" type="number" placeholder="Bedrooms" />
 				<input onChange={(e) => setBathrooms(e.target.value)} name="bathrooms" type="number" placeholder="Bathrooms" />
 				<button onClick={filterHouse}>Filter</button>
