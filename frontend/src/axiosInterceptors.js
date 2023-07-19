@@ -1,10 +1,10 @@
 import axios from "axios";
 import {readLocalStorage} from "./Utilites";
-
+const SERVER_ADDRESS = import.meta.env.VITE_SERVER_ADDRESS
 
 // Setting defaults
 const client = axios.create({
-	baseURL: "http://127.0.0.1:3001",
+	baseURL: SERVER_ADDRESS,
 	withCredentials: true,
 	headers: {'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json'},
 })
